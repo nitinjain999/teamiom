@@ -1,33 +1,19 @@
+# create a folder to store extracted images
+import os
 import cv2
-import numpy as np
+import numpy
 
-# Create a VideoCapture object and read from input file
-# If the input is the camera, pass 0 instead of the video file name
-cap = cv2.VideoCapture(0)
-
-# Check if camera opened successfully
-if (cap.isOpened()== False):
-  print("Error opening video stream or file")
-
-# Read until video is completed
-while(cap.isOpened()):
-  # Capture frame-by-frame
-  ret, frame = cap.read()
-  if ret == True:
-
-    # Display the resulting frame
-    cv2.imshow('Frame',frame)
-
-    # Press Q on keyboard to  exit
-    if cv2.waitKey(25) & 0xFF == ord('q'):
-      break
-
-  # Break the loop
-  else:
-    break
-
-# When everything done, release the video capture object
-cap.release()
-
-# Closes all the frames
-cv2.destroyAllWindows()
+folder = 'test'
+os.mkdir(folder)
+# use opencv to do the job
+import cv2
+print(cv2.__version__)  # my version is 3.1.0
+vidcap = cv2.VideoCapture(0)
+count = 0
+while True:
+    success,image = vidcap.read()
+    if not success:
+        break
+    cv2.imwrite(os.path.join(folder,"frame{:d}.jpg".format(count)), image)     # save frame as JPEG file
+    count += 1
+print("{} images are extacted in {}.".format(count,folder))
