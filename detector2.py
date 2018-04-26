@@ -1,16 +1,16 @@
-# create a folder to store extracted images
-import os
-folder = 'test'
-os.mkdir(folder)
-# use opencv to do the job
 import cv2
-print(cv2.__version__)  # my version is 3.1.0
-vidcap = cv2.VideoCapture(0)
-count = 0
-while True:
-    success,image = vidcap.read()
-    if not success:
+import numpy as np
+
+cap = cv2.VideoCapture(0)
+
+while(True):
+    ret, frame = cap.read()
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
+
+    cv2.imshow('frame', rgb)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        out = cv2.imwrite('capture.jpg', frame)
         break
-    cv2.imwrite(os.path.join(folder,"frame{:d}.png".format(count)), image)     # save frame as PNG file
-    count += 1
-print("{} images are extacted in {}.".format(count,folder))
+
+cap.release()
+cv2.destroyAllWindows()
